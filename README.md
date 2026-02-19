@@ -63,9 +63,8 @@ Battery backup
 WiFi-based configuration
 
 📄 Full Documentation
-
 Detailed documentation available in:
-Full Project Report
+[Full Project Report](./Docs/Project report.odt)
 
 👨‍💻 Author
 
