@@ -1,9 +1,11 @@
-⏰ Timer-Based PC Wake-Up System
-📌 Overview
+# ⏰ Timer-Based PC Wake-Up System
 
-A hardware-based system designed to automatically power on a desktop computer at a predefined time using a IKEA Digital Alarm clock.
+## 📌 Overview
 
-This project is an accessory to my Nextcloud cloud storage server, running on an old PC, to turn it on everyday at 6 AM.
+This repository contains an accessory project that automatically powers on an old desktop computer at a fixed time using a **cheap IKEA digital alarm clock** and a few basic electronic components. The main use case is to reliably wake a Nextcloud server every morning at 6 AM so that the machine can stay powered down the rest of the time.
+
+The target system is an over‑a‑decade‑old PC running Debian 12.6 with Nextcloud. It lacks modern BIOS scheduling features, and continuous operation had caused hardware strain (seized CPU fan, etc.). This project provides a lightweight, hardware‑centric workaround.
+
 
 🚀 Problem Statement
 
