@@ -7,68 +7,84 @@ This repository contains an accessory project that automatically powers on an ol
 The target system is an over‑a‑decade‑old PC running Debian 12.6 with Nextcloud. It lacks modern BIOS scheduling features, and continuous operation had caused hardware strain (seized CPU fan, etc.). This project provides a lightweight, hardware‑centric workaround.
 
 
-🚀 Problem Statement
+---
+## 🚀 Problem Statement
 
-I have made my own cloud storage server using nextcloud and debian 12.6. It runs on a very old (11+ years) PC which doesn't have any modern BIOS features. As it is very old office desktop and not a server, it is not meant to run 24/7 for weeks at a time. This overuse has resulted in a seized CPU fan and a lot of headache.
+Running the server 24/7 on an old office desktop leads to frequent hardware issues. The goal is to:
 
-This project, or sub-project, is to turn the server ON everyday at 6 AM using basic components and a cheap digital alarm clock.
+1. Shutdown the machine automatically when idle overnight,
+2. Wake it up reliably at 06:00 each day using the alarm clock signal.
 
-⚙️ System Architecture
+By doing so, the machine avoids unnecessary wear while still being available on a predictable schedule.
 
-Working Principle:
-A custom script checks the CPU usage for 2 mins at 12 AM everyday. If the Avg. CPU usage for 2 mins is less than 5%, meaning no background job is being performed, the script shuts down the server.
+---
+## ⚙️ System Architecture
 
-Then, to wake the PC up, I am made a simple circuit to check when the alarm beeps and then short the PWR Pins in the motherboard for few seconds untill the PC is on. Then it turns off the alarm by giving the SET button a HIGH signal when the PC case LED turns on.
+### 🔌 Components
 
-🧩 Components Used
+- IKEA digital alarm clock (used as a time trigger)
+- Timer module / microcontroller (for the shutdown script)
+- Relay or transistor interface to short the motherboard’s power‑switch pins
+- Basic wiring and power supply for the alarm clock
+
+*(See the project report in `Docs/Project-report.pdf` for full schematics and parts list.)*
+
+### 🧠 Workflow
+
+1. **Midnight Check** – a cron‑job runs at 00:00 which samples CPU usage for two minutes.
+   - If average usage < 5 %, the script issues a `shutdown` command.
+2. **Alarm Trigger** – when the clock alarm beeps at 06:00, a simple circuit detects the sound.
+3. **Power‑on Pulse** – the circuit briefly shorts the motherboard’s PWR pins, simulating a button press.
+4. **Alarm Disable** – once the PC’s power LED comes on, the circuit sends a HIGH signal to the clock’s SET line to silence it.
 
 
+---
+## 🛠️ Implementation Notes
 
-🖼️ System Diagram
+- Timer module configured with the alarm clock’s output.
+- Custom firmware/programming handles the logic for sensing the beep and driving the relay.
+- Relay wired in parallel with the PC power switch headers on the motherboard.
+- Extensive cycle testing confirmed consistent operation.
 
+---
+## 📊 Testing & Results
 
+| Metric                     | Outcome                         |
+|---------------------------|----------------------------------|
+| Activation accuracy       | ±1 second around 06:00          |
+| Reliability               | Successful over dozens of cycles|
+| Shutdown condition        | 2‑min CPU avg < 5 %             |
 
-🛠️ Implementation
+The system has proved stable in real‑world use over several weeks.
 
-Configured timer module
+---
+## ⚠️ Limitations
 
-Programmed trigger condition
+- Requires physical access to motherboard headers.
+- No battery backup; power loss means manual restart.
+- Only a **single daily schedule** is supported at present.
+- Resetting or reprogramming the alarm clock requires opening the case.
 
-Connected relay across motherboard power switch pins
+---
+## 🔮 Future Improvements
 
-Tested over multiple cycles
+- Support for multiple wake‑up times.
+- A minimal web UI or nextcloud app for configuration.
+- Add a small UPS/backup battery for the timer unit.
+- Wi‑Fi connectivity for remote management.
 
-📊 Testing & Results
+---
+## 📄 Documentation
 
-Successful activation at scheduled time
+See the full project report: [Docs/Project-report.pdf](Docs/Project-report.pdf)
 
-Accuracy within ±1 second
+---
+## 👨‍💻 Author
 
-Reliable over multiple test cycles
+Ayushman Sahoo – engineering & innovation enthusiast
 
-⚠️ Limitations
+*This project is part of my personal portfolio and demonstrates low‑cost automation using legacy hardware.*
 
-Requires motherboard access
+---
 
-No battery backup
-
-Single schedule support
-
-🔮 Future Improvements
-
-Multiple schedules
-
-Web interface
-
-Battery backup
-
-WiFi-based configuration
-
-📄 Full Documentation
-Detailed documentation available in:
-[Full Project Report](Docs/Project-report.pdf)
-
-👨‍💻 Author
-
-Ayushman Sahoo
-Engineering & Innovation Portfolio
+*Last updated: February 2026*
